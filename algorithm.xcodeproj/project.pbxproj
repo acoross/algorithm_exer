@@ -3,11 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 47;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B05FE3311D1ED42600E49373 /* bst.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B05FE3301D1ED42600E49373 /* bst.cpp */; };
 		B084666F1D1C18AD0099ED66 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B084666E1D1C18AD0099ED66 /* main.cpp */; };
+		B0D1794F1D1E5534002B6291 /* binary_tree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0D1794D1D1E5534002B6291 /* binary_tree.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,8 +25,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B05FE3301D1ED42600E49373 /* bst.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bst.cpp; sourceTree = "<group>"; };
 		B084666B1D1C18AD0099ED66 /* algorithm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = algorithm; sourceTree = BUILT_PRODUCTS_DIR; };
-		B084666E1D1C18AD0099ED66 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		B084666E1D1C18AD0099ED66 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; usesTabs = 1; };
+		B0D1794C1D1E5052002B6291 /* binary_tree.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = binary_tree.hpp; sourceTree = "<group>"; };
+		B0D1794D1D1E5534002B6291 /* binary_tree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = binary_tree.cpp; sourceTree = "<group>"; };
+		B0D179501D1E873B002B6291 /* binary_tree_node.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = binary_tree_node.hpp; sourceTree = "<group>"; };
+		B0D179531D1E8C75002B6291 /* bst.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = bst.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,9 +64,30 @@
 		B084666D1D1C18AD0099ED66 /* algorithm */ = {
 			isa = PBXGroup;
 			children = (
+				B0D179521D1E8C31002B6291 /* bst */,
+				B0D179511D1E8C19002B6291 /* bintree */,
 				B084666E1D1C18AD0099ED66 /* main.cpp */,
 			);
 			path = algorithm;
+			sourceTree = "<group>";
+		};
+		B0D179511D1E8C19002B6291 /* bintree */ = {
+			isa = PBXGroup;
+			children = (
+				B0D1794C1D1E5052002B6291 /* binary_tree.hpp */,
+				B0D1794D1D1E5534002B6291 /* binary_tree.cpp */,
+				B0D179501D1E873B002B6291 /* binary_tree_node.hpp */,
+			);
+			name = bintree;
+			sourceTree = "<group>";
+		};
+		B0D179521D1E8C31002B6291 /* bst */ = {
+			isa = PBXGroup;
+			children = (
+				B0D179531D1E8C75002B6291 /* bst.hpp */,
+				B05FE3301D1ED42600E49373 /* bst.cpp */,
+			);
+			name = bst;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -97,7 +125,7 @@
 				};
 			};
 			buildConfigurationList = B08466661D1C18AD0099ED66 /* Build configuration list for PBXProject "algorithm" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -118,6 +146,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B05FE3311D1ED42600E49373 /* bst.cpp in Sources */,
+				B0D1794F1D1E5534002B6291 /* binary_tree.cpp in Sources */,
 				B084666F1D1C18AD0099ED66 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -209,6 +239,10 @@
 		B08466731D1C18AD0099ED66 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "compiler-default";
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -216,6 +250,10 @@
 		B08466741D1C18AD0099ED66 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "compiler-default";
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -239,6 +277,7 @@
 				B08466741D1C18AD0099ED66 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
