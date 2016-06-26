@@ -21,13 +21,13 @@ namespace bintree{
 
 		queue<shared_ptr<BinaryTreeNode>> q;
 
-		if (!root)
+		if (!root_)
 		{
-			root = make_shared<BinaryTreeNode>(data);
+			root_ = make_shared<BinaryTreeNode>(data);
 			return;
 		}
 
-		q.push(root);
+		q.push(root_);
 
 		while (!q.empty())
 		{
@@ -52,18 +52,27 @@ namespace bintree{
 		throw std::runtime_error("bintree insert failed");
 	}
 
-	std::shared_ptr<BinaryTreeNode> BinaryTree::Search(int data)
+	// 조건에 맞는 node 를 찾는다.
+	// 그 node 를 terminal node 와 위치를 바꾼다.
+	// terminal node 를 제거한다.
+	void BinaryTree::Remove(int data)
 	{
-		//조건에 맞는 node 와 부모 node 를 찾는다.
+		if (auto node = this->Search(data))
+		{
+			root_ = BinaryTree::RemoveChild(root_, node);
+		}
+	}
+
+	BinaryTreeNodeSP BinaryTree::Search(int data)
+	{
 		using namespace std;
 
-		if (!root)
-			throw runtime_error("empty tree!");
+		if (!root_) return nullptr;
 
 		queue<shared_ptr<BinaryTreeNode>> q;
-		q.push(root);
+		q.push(root_);
 
-		auto node = root;
+		auto node = root_;
 
 		while (!q.empty())
 		{
@@ -80,62 +89,68 @@ namespace bintree{
 		return nullptr;
 	}
 
-	// 조건에 맞는 node 를 찾는다.
-	// 그 node 를 terminal node 와 위치를 바꾼다.
-	// terminal node 를 제거한다.
-	void BinaryTree::Remove(int data)
+	int BinaryTree::FindMaxValue()
 	{
-		if (auto node = this->Search(data))
+		class MaxFinder
 		{
-			if (!root->RemoveChild(*node))
+		public:
+			bool operator()(BinaryTreeNode* node)
 			{
-				throw std::runtime_error("fuck");
+				if (node->data_ > max)
+					max = node->data_;
+
+				return true;
 			}
+
+			int max{std::numeric_limits<int>::min()};
+		};
+		auto f = MaxFinder();
+
+		preorder(root_, f);
+		return f.max;
+	}
+
+	int BinaryTree::FindMaxValueNonRecursive()
+	{
+		class MaxFinder
+		{
+		public:
+			bool operator()(BinaryTreeNode* node)
+			{
+				if (node->data_ > max)
+					max = node->data_;
+
+				return true;
+			}
+
+			int max{std::numeric_limits<int>::min()};
+		};
+		auto f = MaxFinder();
+
+		level_order_traverse(root_, f);
+		return f.max;
+	}
+
+	////////////////////////////////////
+	// static
+
+	BinaryTreeNodeSP BinaryTree::RemoveChild(BinaryTreeNodeSP root, BinaryTreeNodeSP node)
+	{
+		if (!root) return nullptr;
+		if (is_leaf(root)) return nullptr;
+
+		if (root->left_)
+		{
+			root->left_ = RemoveChild(root->left_, node);
+			return root;
 		}
-	}
 
-	int FindMaxValue(BinaryTree& tree)
-	{
-		class MaxFinder
+		if (root->right_)
 		{
-		public:
-			bool operator()(BinaryTreeNode* node)
-			{
-				if (node->data_ > max)
-					max = node->data_;
+			root->right_ = RemoveChild(root->right_, node);
+			return root;
+		}
 
-				return true;
-			}
-
-			int max{std::numeric_limits<int>::min()};
-		};
-		auto f = MaxFinder();
-
-		tree.Traverse(TraverseOrder::Preorder, f);
-
-		return f.max;
+		return root;
 	}
-
-	int FindMaxValueNonRecursive(BinaryTree& tree)
-	{
-		class MaxFinder
-		{
-		public:
-			bool operator()(BinaryTreeNode* node)
-			{
-				if (node->data_ > max)
-					max = node->data_;
-
-				return true;
-			}
-
-			int max{std::numeric_limits<int>::min()};
-		};
-		auto f = MaxFinder();
-
-		tree.Traverse(TraverseOrder::Levelorder, f);
-
-		return f.max;
-	}
-
 }

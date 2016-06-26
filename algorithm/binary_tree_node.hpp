@@ -9,13 +9,13 @@
 #ifndef bin_tree_node_h
 #define bin_tree_node_h
 
-namespace bintree{
-	
-	class BinaryTree;
+#include <stack>
+#include <utility>
 
-	class BinaryTreeNode
+namespace bintree{
+
+	struct BinaryTreeNode
 	{
-	public:
 		BinaryTreeNode(int data)
 		: data_(data)
 		, left_{nullptr}
@@ -25,72 +25,190 @@ namespace bintree{
 		~BinaryTreeNode() = default;
 
 		int data_{0};
-		
-	private:
-		template <class CallbackT>
-		void Preorder(CallbackT& callback)
-		{
-			if (!callback(this)) return;
-
-			if (left_)
-				left_->Preorder(callback);
-
-			if (right_)
-				right_->Preorder(callback);
-		}
-
-		template <class CallbackT>
-		void Inorder(CallbackT& callback)
-		{
-			if (left_)
-				left_->Inorder(callback);
-
-			if (!callback(this)) return;
-
-			if (right_)
-				right_->Inorder(callback);
-		}
-
-		bool IsTerminal() const
-		{
-			return !left_ && !right_;
-		}
-
-		bool RemoveChild(BinaryTreeNode& node)
-		{
-			if (left_)
-			{
-				if (left_->IsTerminal())
-				{
-					node.data_ = left_->data_;
-					left_.reset();
-					return true;
-				}
-
-				return left_->RemoveChild(node);
-			}
-
-			if (right_)
-			{
-				if (right_->IsTerminal())
-				{
-					node.data_ = right_->data_;
-					right_.reset();
-					return true;
-				}
-
-				return right_->RemoveChild(node);
-			}
-
-			return false;
-		}
-
 		std::shared_ptr<BinaryTreeNode> left_{nullptr};
 		std::shared_ptr<BinaryTreeNode> right_{nullptr};
-		
-		friend class BinaryTree;
 	};
 
+	using BinaryTreeNodeSP = std::shared_ptr<BinaryTreeNode>;
+
+
+	inline bool is_leaf(BinaryTreeNodeSP node)
+	{
+		if (!node) return true;
+
+		return !node->left_ && !node->right_;
+	}
+
+	template <class CallbackT>
+	void preorder(BinaryTreeNodeSP root, CallbackT& callback)
+	{
+		if (!root) return;
+
+		callback(root.get());
+
+		preorder(root->left_, callback);
+		preorder(root->right_, callback);
+	}
+
+	template <class CallbackT>
+	void preorder_non_recursive(BinaryTreeNodeSP root, CallbackT&& func)
+	{
+		if (!root) return;
+
+		std::stack<BinaryTreeNodeSP> stack;
+
+		func(root.get());
+		stack.push(root);
+
+		auto node = root->left_;
+		for(;;)
+		{
+			while (node)
+			{
+				func(node.get());
+				stack.push(node);
+				node = node->left_;
+				continue;
+			}
+
+			if (stack.empty())
+				break;
+
+			node = stack.top()->right_;
+			stack.pop();
+		}
+	}
+
+	template <class CallbackT>
+	void inorder(BinaryTreeNodeSP root, CallbackT& callback)
+	{
+		if (!root) return;
+
+		inorder(root->left_, callback);
+
+		callback(root.get());
+
+		inorder(root->right_, callback);
+	}
+
+	template <class CallbackT>
+	void inorder_non_recursive(BinaryTreeNodeSP root, CallbackT&& callback)
+	{
+		if (!root) return;
+
+		std::stack<BinaryTreeNodeSP> stack;
+
+		stack.push(root);
+
+		auto node = root->left_;
+		for(;;)
+		{
+			while (node)
+			{
+				stack.push(node);
+				node = node->left_;
+				continue;
+			}
+
+			if (stack.empty())
+				break;
+
+			node = stack.top();
+			stack.pop();
+
+			callback(node.get());
+			node = node->right_;
+		}
+	}
+
+	template <class CallbackT>
+	void postorder(BinaryTreeNodeSP root, CallbackT&& callback)
+	{
+		if (!root) return;
+
+		postorder(root->left_, std::forward<CallbackT>(callback));
+		postorder(root->right_, std::forward<CallbackT>(callback));
+
+		callback(root.get());
+	}
+
+	template <class CallbackT>
+	void postorder_non_recursive(BinaryTreeNodeSP root, CallbackT&& callback)
+	{
+		std::stack<BinaryTreeNodeSP> stack;
+
+		auto node = root;
+		for(;;)
+		{
+			if (node)
+			{
+				stack.push(node);
+				node = node->left_;
+				continue;
+			}
+			else
+			{
+				if (stack.empty())
+					return;
+
+				if (!stack.top()->right_)
+				{
+					node = stack.top();
+					stack.pop();
+
+					callback(node.get());
+
+					while (!stack.empty() && stack.top()->right_ == node)
+					{
+						node = stack.top();
+						callback(node.get());
+						stack.pop();
+					}
+				}
+
+				if (!stack.empty())
+					node = stack.top()->right_;
+				else
+					node = nullptr;
+			}
+		}
+	}
+
+	template <class CallbackT>
+	void level_order_traverse(BinaryTreeNodeSP root, CallbackT& callback)
+	{
+		using namespace std;
+
+		queue<shared_ptr<BinaryTreeNode>> q;
+
+		if (!root)
+		{
+			return;
+		}
+
+		q.push(root);
+
+		while (!q.empty())
+		{
+			auto node = q.front();
+			q.pop();
+
+			if (!callback(node.get()))
+				return;
+
+			if (node->left_)
+			{
+				q.push(node->left_);
+			}
+
+			if (node->right_)
+			{
+				q.push(node->right_);
+			}
+		}
+
+		return;
+	}
 }
 
 #endif /* bin_tree_node_h */

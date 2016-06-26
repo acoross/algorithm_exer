@@ -11,6 +11,8 @@
 #include "bst.hpp"
 
 namespace bst{
+	using namespace bintree;
+	
 	static BSTNodeSP SearchMin(BSTNodeSP root)
 	{
 		if (!root)
@@ -86,7 +88,7 @@ namespace bst{
 		}
 
 		// root 를 삭제하는 경우
-		if (root->IsTerminal())
+		if (is_leaf(root))
 			return nullptr;
 		else if (!root->left_)
 			return root->right_;

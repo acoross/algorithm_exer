@@ -35,31 +35,26 @@ namespace bintree{
 
 		void Remove(int data);
 		
-		std::shared_ptr<BinaryTreeNode> Search(int data);
+		BinaryTreeNodeSP Search(int data);
 
 		template <class CallbackT>
 		void Traverse(TraverseOrder to, CallbackT& callback)
 		{
-			if (!root)
-			{
-				return;
-			}
-
 			switch(to)
 			{
 				case TraverseOrder::Preorder:
 				{
-					root->Preorder(callback);
+					preorder(root_, callback);
 					break;
 				}
 				case TraverseOrder::Inorder:
 				{
-					root->Inorder(callback);
+					inorder(root_, callback);
 					break;
 				}
 				case TraverseOrder::Levelorder:
 				{
-					level_order_traverse(callback);
+					level_order_traverse(root_, callback);
 					break;
 				}
 				default:
@@ -71,52 +66,19 @@ namespace bintree{
 			return;
 		}
 
+		// 최대값을 가지는 node 를 return;
+		// 중복될 경우 처음 찾은 것을 return;
+		// empty tree 인 경우 nullptr return;
+		int FindMaxValue();
+
+		// level order 방식으로 해볼까?
+		int FindMaxValueNonRecursive();
+
 	private:
-		template <class CallbackT>
-		void level_order_traverse(CallbackT& callback) const
-		{
-			using namespace std;
+		static BinaryTreeNodeSP RemoveChild(BinaryTreeNodeSP root, BinaryTreeNodeSP node);
 
-			queue<shared_ptr<BinaryTreeNode>> q;
-
-			if (!root)
-			{
-				return;
-			}
-
-			q.push(root);
-
-			while (!q.empty())
-			{
-				auto node = q.front();
-				q.pop();
-
-				callback(node.get());
-
-				if (node->left_)
-				{
-					q.push(node->left_);
-				}
-
-				if (node->right_)
-				{
-					q.push(node->right_);
-				}
-			}
-			
-			return;
-		}
-
-		std::shared_ptr<BinaryTreeNode> root;
+		std::shared_ptr<BinaryTreeNode> root_;
 	};
-
-	// 최대값을 가지는 node 를 return;
-	// 중복될 경우 처음 찾은 것을 return;
-	// empty tree 인 경우 nullptr return;
-	int FindMaxValue(BinaryTree& tree);
-
-	// level order 방식으로 해볼까?
-	int FindMaxValueNonRecursive(BinaryTree& tree);
 
 }//namespace bintree
 #endif /* binary_tree_h */

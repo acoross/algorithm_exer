@@ -28,6 +28,15 @@ void TestBinaryTree()
 			btree.Insert(i);
 		}
 
+		auto cb = [](BinaryTreeNode* node)->bool
+		{
+			cout << node->data_ << ", ";
+			if (node->data_ == 3)
+				return false;
+			return true;
+		};
+		btree.Traverse(TraverseOrder::Preorder, cb);
+
 		using std::cout;
 
 		auto printF = [](BinaryTreeNode* node)->bool
@@ -36,7 +45,7 @@ void TestBinaryTree()
 			return true;
 		};
 
-		auto maxval = FindMaxValue(btree);
+		auto maxval = btree.FindMaxValue();
 		cout << "maxval: " << maxval << endl;
 
 		cout << "Levelorder\n";
@@ -49,16 +58,10 @@ void TestBinaryTree()
 
 		btree.Remove(9);
 
-		//		cout << "preorder\n";
-		//		btree.Traverse(TraverseOrder::Preorder, printF);
-		//
-		//		cout << "Inorder\n";
-		//		btree.Traverse(TraverseOrder::Inorder, printF);
-
 		cout << "Levelorder\n";
 		btree.Traverse(TraverseOrder::Levelorder, printF);
 
-		auto maxval2 = FindMaxValueNonRecursive(btree);
+		auto maxval2 = btree.FindMaxValueNonRecursive();
 		cout << "maxval2: " << maxval2 << endl;
 	}
 	catch (std::exception& ex)
@@ -88,6 +91,7 @@ void TestBST()
 			bstree.Insert(arr[i]);
 		}
 
+		bstree.PrintNonrecur();
 		bstree.Print();
 
 		for (int i = 7; i >= 0; --i)
@@ -108,6 +112,7 @@ void TestBST()
 int main(int argc, const char * argv[])
 {
 	TestBST();
+	//TestBinaryTree();
 
     return 0;
 }

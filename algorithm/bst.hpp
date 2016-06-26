@@ -13,25 +13,12 @@
 #include <memory>
 #include <queue>
 
+#include "binary_tree_node.hpp"
+
 namespace bst{
 
-	struct BSTNode;
-	using BSTNodeSP = std::shared_ptr<BSTNode>;
-
-	struct BSTNode
-	{
-		BSTNode(int data)
-		: data_(data){}
-
-		bool IsTerminal() const
-		{
-			return !left_ && !right_;
-		}
-
-		int data_;
-		std::shared_ptr<BSTNode> right_{nullptr};
-		std::shared_ptr<BSTNode> left_{nullptr};
-	};
+	using BSTNode = bintree::BinaryTreeNode;
+	using BSTNodeSP = bintree::BinaryTreeNodeSP;
 
 	class BST
 	{
@@ -39,7 +26,24 @@ namespace bst{
 		void Insert(int data);
 		void Remove(int data);
 		void Print();
-		
+
+		void PrintNonrecur()
+		{
+			auto func = [](BSTNode* node)->bool
+			{
+				std::cout << node->data_ << ", ";
+				return true;
+			};
+			//bintree::preorder_non_recursive(root_, func);
+			//bintree::inorder_non_recursive(root_, func);
+
+			bintree::postorder(root_, func);
+			std::cout << std::endl;
+			
+			bintree::postorder_non_recursive(root_, func);
+			std::cout << std::endl;
+		}
+
 	private:
 		BSTNodeSP root_;
 	};
