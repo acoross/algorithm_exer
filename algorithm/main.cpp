@@ -10,9 +10,11 @@
 #include <memory>
 #include <random>
 #include <time.h>
+#include <vector>
 
 #include "binary_tree.hpp"
 #include "bst.hpp"
+#include "avl.hpp"
 
 void TestBinaryTree()
 {
@@ -28,7 +30,7 @@ void TestBinaryTree()
 			btree.Insert(i);
 		}
 
-		auto cb = [](BinaryTreeNode* node)->bool
+		auto cb = [](BinaryNode* node)->bool
 		{
 			cout << node->data_ << ", ";
 			if (node->data_ == 3)
@@ -39,7 +41,7 @@ void TestBinaryTree()
 
 		using std::cout;
 
-		auto printF = [](BinaryTreeNode* node)->bool
+		auto printF = [](BinaryNode* node)->bool
 		{
 			cout << node->data_ << ", ";
 			return true;
@@ -109,10 +111,63 @@ void TestBST()
 	}
 }
 
+void TestAvl()
+{
+	avl::AvlTree avltree;
+
+//	std::vector<int> arr = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+//
+//	for (auto& n : arr)
+//	{
+//		avltree.Insert(n);
+//	}
+
+	avltree.PrintWithFormat();
+
+	for (;;)
+	{
+		char cmd = 0;
+		int val = 0;
+		printf("enter:\n");
+		scanf("%1c %d", &cmd, &val);
+		printf("input: %c %d\n", cmd, val);
+		switch (cmd)
+		{
+			case 'l':
+			{
+				avltree.RotateLL(val);
+				break;
+			}
+			case 'r':
+			{
+				avltree.RotateRR(val);
+				break;
+			}
+			case 'i':
+			{
+				avltree.Insert(val);
+				break;
+			}
+			case 'd':
+			{
+				avltree.Remove(val);
+				break;
+			}
+			default:
+			{
+				continue;
+			}
+		}
+
+		avltree.PrintWithFormat();
+	}
+}
+
 int main(int argc, const char * argv[])
 {
-	TestBST();
+	//TestBST();
 	//TestBinaryTree();
+	TestAvl();
 
     return 0;
 }

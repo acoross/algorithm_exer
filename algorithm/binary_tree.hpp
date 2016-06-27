@@ -35,7 +35,7 @@ namespace bintree{
 
 		void Remove(int data);
 		
-		BinaryTreeNodeSP Search(int data);
+		BinaryNodeSP Search(int data);
 
 		template <class CallbackT>
 		void Traverse(TraverseOrder to, CallbackT& callback)
@@ -75,9 +75,9 @@ namespace bintree{
 		int FindMaxValueNonRecursive();
 
 	private:
-		static BinaryTreeNodeSP RemoveChild(BinaryTreeNodeSP root, BinaryTreeNodeSP node);
+		static BinaryNodeSP RemoveChild(BinaryNodeSP root, BinaryNodeSP node);
 
-		std::shared_ptr<BinaryTreeNode> root_;
+		BinaryNodeSP root_;
 	};
 
 }//namespace bintree

@@ -19,11 +19,11 @@ namespace bintree{
 	{
 		using namespace std;
 
-		queue<shared_ptr<BinaryTreeNode>> q;
+		queue<BinaryNodeSP> q;
 
 		if (!root_)
 		{
-			root_ = make_shared<BinaryTreeNode>(data);
+			root_ = make_shared<BinaryNode>(data);
 			return;
 		}
 
@@ -36,14 +36,14 @@ namespace bintree{
 
 			if (!node->left_)
 			{
-				node->left_ = make_shared<BinaryTreeNode>(data);
+				node->left_ = make_shared<BinaryNode>(data);
 				return;
 			}
 			q.push(node->left_);
 
 			if (!node->right_)
 			{
-				node->right_ = make_shared<BinaryTreeNode>(data);
+				node->right_ = make_shared<BinaryNode>(data);
 				return;
 			}
 			q.push(node->right_);
@@ -63,13 +63,13 @@ namespace bintree{
 		}
 	}
 
-	BinaryTreeNodeSP BinaryTree::Search(int data)
+	BinaryNodeSP BinaryTree::Search(int data)
 	{
 		using namespace std;
 
 		if (!root_) return nullptr;
 
-		queue<shared_ptr<BinaryTreeNode>> q;
+		queue<BinaryNodeSP> q;
 		q.push(root_);
 
 		auto node = root_;
@@ -94,7 +94,7 @@ namespace bintree{
 		class MaxFinder
 		{
 		public:
-			bool operator()(BinaryTreeNode* node)
+			bool operator()(BinaryNode* node)
 			{
 				if (node->data_ > max)
 					max = node->data_;
@@ -115,7 +115,7 @@ namespace bintree{
 		class MaxFinder
 		{
 		public:
-			bool operator()(BinaryTreeNode* node)
+			bool operator()(BinaryNode* node)
 			{
 				if (node->data_ > max)
 					max = node->data_;
@@ -134,7 +134,7 @@ namespace bintree{
 	////////////////////////////////////
 	// static
 
-	BinaryTreeNodeSP BinaryTree::RemoveChild(BinaryTreeNodeSP root, BinaryTreeNodeSP node)
+	BinaryNodeSP BinaryTree::RemoveChild(BinaryNodeSP root, BinaryNodeSP node)
 	{
 		if (!root) return nullptr;
 		if (is_leaf(root)) return nullptr;

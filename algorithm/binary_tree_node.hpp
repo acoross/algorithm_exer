@@ -14,25 +14,25 @@
 
 namespace bintree{
 
-	struct BinaryTreeNode
+	struct BinaryNode
 	{
-		BinaryTreeNode(int data)
+		BinaryNode(int data)
 		: data_(data)
 		, left_{nullptr}
 		, right_{nullptr}
 		{}
 
-		~BinaryTreeNode() = default;
+		~BinaryNode() = default;
 
 		int data_{0};
-		std::shared_ptr<BinaryTreeNode> left_{nullptr};
-		std::shared_ptr<BinaryTreeNode> right_{nullptr};
+		std::shared_ptr<BinaryNode> left_{nullptr};
+		std::shared_ptr<BinaryNode> right_{nullptr};
 	};
 
-	using BinaryTreeNodeSP = std::shared_ptr<BinaryTreeNode>;
+	using BinaryNodeSP = std::shared_ptr<BinaryNode>;
 
 
-	inline bool is_leaf(BinaryTreeNodeSP node)
+	inline bool is_leaf(BinaryNodeSP node)
 	{
 		if (!node) return true;
 
@@ -40,7 +40,7 @@ namespace bintree{
 	}
 
 	template <class CallbackT>
-	void preorder(BinaryTreeNodeSP root, CallbackT& callback)
+	void preorder(BinaryNodeSP root, CallbackT& callback)
 	{
 		if (!root) return;
 
@@ -51,11 +51,11 @@ namespace bintree{
 	}
 
 	template <class CallbackT>
-	void preorder_non_recursive(BinaryTreeNodeSP root, CallbackT&& func)
+	void preorder_non_recursive(BinaryNodeSP root, CallbackT&& func)
 	{
 		if (!root) return;
 
-		std::stack<BinaryTreeNodeSP> stack;
+		std::stack<BinaryNodeSP> stack;
 
 		func(root.get());
 		stack.push(root);
@@ -80,7 +80,7 @@ namespace bintree{
 	}
 
 	template <class CallbackT>
-	void inorder(BinaryTreeNodeSP root, CallbackT& callback)
+	void inorder(BinaryNodeSP root, CallbackT& callback)
 	{
 		if (!root) return;
 
@@ -92,11 +92,11 @@ namespace bintree{
 	}
 
 	template <class CallbackT>
-	void inorder_non_recursive(BinaryTreeNodeSP root, CallbackT&& callback)
+	void inorder_non_recursive(BinaryNodeSP root, CallbackT&& callback)
 	{
 		if (!root) return;
 
-		std::stack<BinaryTreeNodeSP> stack;
+		std::stack<BinaryNodeSP> stack;
 
 		stack.push(root);
 
@@ -122,7 +122,7 @@ namespace bintree{
 	}
 
 	template <class CallbackT>
-	void postorder(BinaryTreeNodeSP root, CallbackT&& callback)
+	void postorder(BinaryNodeSP root, CallbackT&& callback)
 	{
 		if (!root) return;
 
@@ -133,9 +133,9 @@ namespace bintree{
 	}
 
 	template <class CallbackT>
-	void postorder_non_recursive(BinaryTreeNodeSP root, CallbackT&& callback)
+	void postorder_non_recursive(BinaryNodeSP root, CallbackT&& callback)
 	{
-		std::stack<BinaryTreeNodeSP> stack;
+		std::stack<BinaryNodeSP> stack;
 
 		auto node = root;
 		for(;;)
@@ -175,11 +175,11 @@ namespace bintree{
 	}
 
 	template <class CallbackT>
-	void level_order_traverse(BinaryTreeNodeSP root, CallbackT& callback)
+	void level_order_traverse(BinaryNodeSP root, CallbackT& callback)
 	{
 		using namespace std;
 
-		queue<shared_ptr<BinaryTreeNode>> q;
+		queue<shared_ptr<BinaryNode>> q;
 
 		if (!root)
 		{

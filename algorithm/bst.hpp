@@ -17,14 +17,19 @@
 
 namespace bst{
 
-	using BSTNode = bintree::BinaryTreeNode;
-	using BSTNodeSP = bintree::BinaryTreeNodeSP;
+	using BSTNode = bintree::BinaryNode;
+	using BSTNodeSP = bintree::BinaryNodeSP;
 
 	class BST
 	{
 	public:
+		BSTNodeSP Search(int data);
+		BSTNodeSP SearchMax();
+		BSTNodeSP SearchMin();
+
 		void Insert(int data);
 		void Remove(int data);
+
 		void Print();
 
 		void PrintNonrecur()

@@ -124,6 +124,21 @@ namespace bst{
 	//////////////////////////////
 	//BST
 
+	BSTNodeSP BST::Search(int data)
+	{
+		return bst::Search(root_, data);
+	}
+
+	BSTNodeSP BST::SearchMax()
+	{
+		return bst::SearchMax(root_);
+	}
+
+	BSTNodeSP BST::SearchMin()
+	{
+		return bst::SearchMin(root_);
+	}
+
 	void BST::Insert(int data)
 	{
 		root_ = bst::Insert(root_, data);
