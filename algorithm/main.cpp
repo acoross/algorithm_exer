@@ -14,7 +14,7 @@
 
 #include "binary_tree.hpp"
 #include "bst.hpp"
-#include "avl.hpp"
+#include "avl_tree.hpp"
 
 void TestBinaryTree()
 {
@@ -115,12 +115,27 @@ void TestAvl()
 {
 	avl::AvlTree avltree;
 
-//	std::vector<int> arr = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
-//
-//	for (auto& n : arr)
-//	{
-//		avltree.Insert(n);
-//	}
+	//std::vector<int> arr = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+//	std::vector<int> arr = {8, 5, 9, 3, 6, 7};
+	//std::vector<int> arr = {4, 2, 7, 8, 6, 5};
+	std::vector<int> arr;
+	arr.reserve(100);
+	for (int i = 0; i < 100; ++i)
+		arr.push_back(i);
+
+	{
+		std::default_random_engine re((unsigned)time(nullptr));
+		std::shuffle(arr.begin(), arr.end(), re);
+	}
+
+	int i = 0;
+	for (auto& n : arr)
+	{
+		++i;
+		avltree.Insert(n);
+//		if (i % 10 == 0)
+//			avltree.PrintWithFormat();
+	}
 
 	avltree.PrintWithFormat();
 
