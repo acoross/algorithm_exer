@@ -15,6 +15,7 @@
 #include "binary_tree.hpp"
 #include "bst.hpp"
 #include "avl_tree.hpp"
+#include "red_black_tree.hpp"
 
 void TestBinaryTree()
 {
@@ -178,11 +179,42 @@ void TestAvl()
 	}
 }
 
+void RedBlack()
+{
+	using namespace redblacktree;
+	RedBlackBST tree;
+
+	for (int i = 0; i < 16; ++i)
+	{
+		tree.InsertAs23tree(i);
+		//tree.InsertAs234tree(i);
+		//if (i % 5 == 0)
+//		{
+//			std::cout << "print\n";
+//			tree.PrintInside();
+//			std::cout << std::endl;
+//		}
+	}
+
+	std::cout << "print tree\n";
+	tree.PrintInside();
+	std::cout << std::endl;
+
+	for (int i = 0; i < 10; ++i)
+	{
+		tree.RemoveMin();
+		std::cout << "print delete " << i << "\n";
+		tree.PrintInside();
+		std::cout << std::endl;
+	}
+}
+
 int main(int argc, const char * argv[])
 {
 	//TestBST();
 	//TestBinaryTree();
-	TestAvl();
+	//TestAvl();
+	RedBlack();
 
     return 0;
 }
