@@ -13,7 +13,31 @@
 #include <memory>
 #include <cassert>
 
+#ifdef _RB_DEBUG_
+	#define DEBUGF(f, x) printf("[DEBUG]%s( %d )\n", f, x);
+#else
+	#define DEBUGF(f, x) ;
+#endif
+
 namespace redblacktree {
+
+enum class Color : bool
+{
+	Black = false,
+	Red = true
+};
+
+struct Node
+{
+	Node(int d, Color c)
+	: data(d), color(c){}
+
+	int data;
+	Color color;
+	std::shared_ptr<Node> left;
+	std::shared_ptr<Node> right;
+};
+using NodeSP = std::shared_ptr<Node>;
 
 class RedBlackBST
 {
@@ -21,6 +45,11 @@ public:
 	RedBlackBST()
 	: root_(nullptr)
 	{}
+
+	int CountRedblackDepth()
+	{
+		return count_anscestor_black(root_);
+	}
 
 	void InsertAs23tree(int data)
 	{
@@ -37,13 +66,14 @@ public:
 	void RemoveMin()
 	{
 		// 루트가 2노드고 자식둘이 다 2노드면 합쳐서 4노드로 만든다.
-		if (!is_red(root_->left) && !is_red(root_->right))
-		{
-			flip_child_color_to_red(root_);
-		}
+//		if (root_ && is_2node(root_) && root_->left && root_->right && is_2node(root_->left) && is_2node(root_->right))
+//		{
+//			flipColorsReverse(root_);
+//		}
 
 		root_ = remove_min(root_);
-		root_->color = Color::Black;
+
+		if (root_) root_->color = Color::Black;
 	}
 
 	void RemoveMax()
@@ -58,24 +88,6 @@ public:
 	}
 
 private:
-	enum class Color : bool
-	{
-		Black = false,
-		Red = true
-	};
-
-	struct Node
-	{
-		Node(int d, Color c)
-		: data(d), color(c){}
-
-		int data;
-		Color color;
-		std::shared_ptr<Node> left;
-		std::shared_ptr<Node> right;
-	};
-	using NodeSP = std::shared_ptr<Node>;
-
 	static bool is_red(NodeSP& n)
 	{
 		if (!n)
@@ -89,23 +101,32 @@ private:
 
 	static void flipColors(NodeSP& n)
 	{
-		if (!n)
-			return;
+		if (!n) return;
 
-		printf("flipColor, [%d,%d,%d]\n", n->data, n->left->data, n->right->data);
+		DEBUGF("flipColor", n->data);
 
 		n->color = Color::Red;
+		if (n->left) n->left->color = Color::Black;
+		if (n->right) n->right->color = Color::Black;
+	}
 
-		if (n->left)
-			n->left->color = Color::Black;
+	static void flipColorsReverse(NodeSP& n)
+	{
+		if (!n) return;
 
-		if (n->right)
-			n->right->color = Color::Black;
+		DEBUGF("flipColorReverse", n->data);
+
+		n->color = Color::Black;
+		if (n->left) n->left->color = Color::Red;
+		if (n->right) n->right->color = Color::Red;
 	}
 
 	static NodeSP rotate_left(NodeSP n)
 	{
+		DEBUGF("rotate_left", n->data);
+
 		auto child = n->right;
+		assert(child);
 		n->right = child->left;
 
 		child->left = n;
@@ -118,7 +139,10 @@ private:
 
 	static NodeSP rotate_right(NodeSP n)
 	{
+		DEBUGF("rotate_right", n->data);
+
 		auto child = n->left;
+		assert(child);
 		n->left = child->right;
 
 		child->right = n;
@@ -169,149 +193,111 @@ private:
 		return n;
 	}
 
-	static void flip_child_color_to_red(NodeSP n)
+	static bool is_2node(NodeSP n)
 	{
-		if (!n)
-			return;
+		assert(n);
 
-		n->color = Color::Black;
+		if (!is_red(n) && !is_red(n->left))
+			return true;
 
-		if (n->left) n->left->color = Color::Red;
-		if (n->right) n->right->color = Color::Red;
+		return false;
 	}
 
-
-	static NodeSP remove_way_down_left(NodeSP current)
+	// current->left 가 2node 가 아니도록 만든다.
+	static NodeSP Preprocess_to_remove_min(NodeSP current)
 	{
-		if (!current->left)
-			return current;
+		// 234 tree 관점에서,
+			// 1. left node 가 not 2node 면 넘어간다.
+			// 2. left node 가 2node 고 immediate sibling 이 not 2node 면
+				// key 를 하나 빌린다.
+			// 3. left node 가 2node 고 immediate sibling 이 2node 면
+				// 부모에게서 key를 하나 빌리고 left child, sibling 을 합쳐서
+				// 4node 를 만든다.
 
-		// left child is not 2node
-		if (is_red(current->left) || is_red(current->left->left))
-			return current;
+		assert(current);
+		if (!current) return current;
 
-		// left child is 2node and its sibling is not 2node
-		if (current->right && !is_red(current->right) && is_red(current->right->left))
+		auto left = current->left;
+		if (!left)
 		{
-			// move a key to left child
-			// current: red, leftmost in 3 or 4 node
-			// left, right: black 2node. its all childs are also black.
-			current->right = rotate_left(current->right);
-			current = rotate_right(current);
-			current->left->color = Color::Black;
-			if (current->left->left)
-				current->left->left->color = Color::Red;
+			assert(0);
+			return current;
 		}
-		// left child is 2node its sibling is 2node
+
+		if (!is_2node(current->left))
+		{
+			return current;
+		}
+		else if (current->right && !is_2node(current->right))
+		{
+			current->right = rotate_right(current->right);
+			flipColors(current->right);
+			current = rotate_left(current);
+			//flipColorsReverse(current->left);
+			auto flip = [](auto n)
+			{
+				DEBUGF("flip lambda", n->data);
+				n->color = Color::Black;
+				if (n->left) n->left->color = Color::Red;
+				//if (n->right) n->right->color = Color::Red;
+			};
+			flip(current->left);
+
+			current->right = Postprocess_to_remove_min(current->right);
+		}
 		else
 		{
-			// make 4node (left child + one parent key + sibling child)
-			flip_child_color_to_red(current);
+			flipColorsReverse(current);
 		}
 
 		return current;
 	}
 
-	// 삭제하려는 값을 가지는 node가 2node 면 안됨. (234 tree model)
+	static NodeSP Postprocess_to_remove_min(NodeSP n)
+	{
+		assert(n);
+		if (!n) return n;
+
+		// way up balancing
+		if (!is_red(n->left) && is_red(n->right)) n = rotate_left(n);
+		if (is_red(n->left) && is_red(n->left->left)) n = rotate_right(n);
+		if (is_red(n->left) && is_red(n->right)) flipColors(n);
+		return n;
+	}
+
+	// input current 는 2node가 아니어야 한다.
 	static NodeSP remove_min(NodeSP current)
 	{
 		if (!current)
 			return current;
 
-		// current is 2node and 2 childs are 2nodes. (root only)
-			// make 4node
-		if (!is_red(current->right) && !is_red(current->left))
-			flip_child_color_to_red(current);
-
-		//... current node is not 2node now.
-
-		// no left child
-			// delete current
 		if (!current->left)
 		{
-			// current shoud not be 2node(black left-most node)
-			//assert(is_red(current));
+//			assert(is_red(current));
+//			assert(!is_red(current->right));
 			return current->right;
 		}
 
-		current = remove_way_down_left(current);
-
-		// inside this call, n is not 2node.
+		current = Preprocess_to_remove_min(current);
 		current->left = remove_min(current->left);
-
-		// way up balancing
-		if (!is_red(current->left) && is_red(current->right)) current = rotate_left(current);
-		if (is_red(current->left) && is_red(current->left->left)) current = rotate_right(current);
-		if (is_red(current->left) && is_red(current->right)) flipColors(current);
+		current = Postprocess_to_remove_min(current);
 
 		return current;
 	}
 
-	static NodeSP remove_way_down_right(NodeSP current)
+	// [DEBUG]
+	static int count_anscestor_black(NodeSP& n)
 	{
-		if (!current->right)
-			return current;
+		if (!n) return 0;
 
-		// right child is not 2node
-		if (is_red(current->right) || is_red(current->right->left))
-			return current;
+		auto l = count_anscestor_black(n->left);
+		auto r = count_anscestor_black(n->right);
 
-		// right child is 2node and its sibling is not 2node
-		if (current->left && !is_red(current->left) && is_red(current->left->left))
-		{
-			// move a key to right child
-			// current: red, right in 3 or 4 node
-				// right: 2node
-				// left: not 2node
-			current->right = rotate_left(current->right);
-			current = rotate_right(current);
-			current->left->color = Color::Black;
-			if (current->left->left)
-				current->left->left->color = Color::Red;
-		}
-		// left child is 2node its sibling is 2node
-		else
-		{
-			// make 4node (left child + one parent key + sibling child)
-			flip_child_color_to_red(current);
-		}
+		assert(l == r);
+		if (l != r) return -1;
 
-		return current;
-	}
-
-	static NodeSP remove_max(NodeSP current)
-	{
-
-		if (!current)
-			return current;
-
-		// current is 2node and 2 childs are 2nodes. (root only)
-		// make 4node
-		if (!is_red(current->right) && !is_red(current->left))
-			flip_child_color_to_red(current);
-
-		//... current node is not 2node now.
-
-		// no left child
-		// delete current
-		if (!current->right)
-		{
-			// current shoud not be 2node(black left-most node)
-			assert(is_red(current->left));
-			return current->left;
-		}
-
-		current = remove_way_down_right(current);
-
-		// inside this call, n is not 2node.
-		current->right = remove_min(current->right);
-
-		// way up balancing
-		if (!is_red(current->left) && is_red(current->right)) current = rotate_left(current);
-		if (is_red(current->left) && is_red(current->left->left)) current = rotate_right(current);
-		if (is_red(current->left) && is_red(current->right)) flipColors(current);
-
-		return current;
+		if (!is_red(n)) return l + 1;
+		else return l;
 	}
 
 	static void print_inside(NodeSP n, int level)
@@ -329,6 +315,7 @@ private:
 			print_inside(n->right, level+1);
 		}
 	}
+	// [DEBUG] end
 
 	NodeSP root_;
 };

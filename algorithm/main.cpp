@@ -15,6 +15,8 @@
 #include "binary_tree.hpp"
 #include "bst.hpp"
 #include "avl_tree.hpp"
+
+#define _RB_DEBUG_
 #include "red_black_tree.hpp"
 
 void TestBinaryTree()
@@ -184,28 +186,25 @@ void RedBlack()
 	using namespace redblacktree;
 	RedBlackBST tree;
 
-	for (int i = 0; i < 16; ++i)
+	for (int i = 0; i < 30; ++i)
 	{
 		tree.InsertAs23tree(i);
-		//tree.InsertAs234tree(i);
-		//if (i % 5 == 0)
-//		{
-//			std::cout << "print\n";
-//			tree.PrintInside();
-//			std::cout << std::endl;
-//		}
 	}
 
-	std::cout << "print tree\n";
-	tree.PrintInside();
-	std::cout << std::endl;
+//	std::cout << "print tree\n";
+//	tree.PrintInside();
+//	std::cout << std::endl;
 
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < 30; ++i)
 	{
 		tree.RemoveMin();
-		std::cout << "print delete " << i << "\n";
-		tree.PrintInside();
-		std::cout << std::endl;
+		if (i > 70)
+		{
+			std::cout << "print delete " << i << "\n";
+			tree.PrintInside();
+			std::cout << "depth: " << tree.CountRedblackDepth() << std::endl;
+			std::cout << std::endl;
+		}
 	}
 }
 

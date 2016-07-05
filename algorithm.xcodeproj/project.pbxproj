@@ -12,7 +12,6 @@
 		B084666F1D1C18AD0099ED66 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B084666E1D1C18AD0099ED66 /* main.cpp */; };
 		B090B0871D22CB19007F3EFF /* avl_tree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B090B0851D22CB19007F3EFF /* avl_tree.cpp */; };
 		B0D1794F1D1E5534002B6291 /* binary_tree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0D1794D1D1E5534002B6291 /* binary_tree.cpp */; };
-		B0F28FE71D2BF114005E1057 /* red_black_tree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0F28FE51D2BF114005E1057 /* red_black_tree.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,7 +38,6 @@
 		B0D1794D1D1E5534002B6291 /* binary_tree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = binary_tree.cpp; sourceTree = "<group>"; };
 		B0D179501D1E873B002B6291 /* binary_tree_node.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = binary_tree_node.hpp; sourceTree = "<group>"; };
 		B0D179531D1E8C75002B6291 /* bst.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = bst.hpp; sourceTree = "<group>"; };
-		B0F28FE51D2BF114005E1057 /* red_black_tree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = red_black_tree.cpp; sourceTree = "<group>"; };
 		B0F28FE61D2BF114005E1057 /* red_black_tree.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = red_black_tree.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -115,7 +113,6 @@
 		B0F28FE41D2BF0F0005E1057 /* red_black_tree */ = {
 			isa = PBXGroup;
 			children = (
-				B0F28FE51D2BF114005E1057 /* red_black_tree.cpp */,
 				B0F28FE61D2BF114005E1057 /* red_black_tree.hpp */,
 			);
 			name = red_black_tree;
@@ -178,7 +175,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B090B0871D22CB19007F3EFF /* avl_tree.cpp in Sources */,
-				B0F28FE71D2BF114005E1057 /* red_black_tree.cpp in Sources */,
 				B05FE3311D1ED42600E49373 /* bst.cpp in Sources */,
 				B0D1794F1D1E5534002B6291 /* binary_tree.cpp in Sources */,
 				B084666F1D1C18AD0099ED66 /* main.cpp in Sources */,
