@@ -186,25 +186,27 @@ void RedBlack()
 	using namespace redblacktree;
 	RedBlackBST tree;
 
-	for (int i = 0; i < 30; ++i)
+	//char arr[] = "EASYQUTION";
+	//char arr[] = "YLPMXHCRAES";
+	//char arr[] = "ASERCHXM";
+
+	for (int i = 0; i < 10; ++i)
 	{
 		tree.InsertAs23tree(i);
 	}
 
-//	std::cout << "print tree\n";
-//	tree.PrintInside();
-//	std::cout << std::endl;
+	std::cout << "print tree\n";
+	tree.PrintInside();
+	std::cout << std::endl;
 
-	for (int i = 0; i < 30; ++i)
+	tree.debugPrintOn = true;
+	for (int i = 0; i < 10; ++i)
 	{
 		tree.RemoveMin();
-		if (i > 70)
-		{
-			std::cout << "print delete " << i << "\n";
-			tree.PrintInside();
-			std::cout << "depth: " << tree.CountRedblackDepth() << std::endl;
-			std::cout << std::endl;
-		}
+		std::cout << "print " << i << "\n";
+		tree.PrintInside();
+		std::cout << "depth: " << tree.CountRedblackDepth() << std::endl;
+		std::cout << std::endl;
 	}
 }
 

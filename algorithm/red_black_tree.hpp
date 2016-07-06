@@ -12,36 +12,73 @@
 #include <iostream>
 #include <memory>
 #include <cassert>
+#include <functional>
 
 #ifdef _RB_DEBUG_
-	#define DEBUGF(f, x) printf("[DEBUG]%s( %d )\n", f, x);
+	#define DEBUGF(f, x) printf("[DEBUG]%s( %d )\n", f, x);\
+		if (debugPrintOn) PrintInside();
 #else
 	#define DEBUGF(f, x) ;
 #endif
 
+#define static
+
 namespace redblacktree {
 
-enum class Color : bool
+class Printer
 {
-	Black = false,
-	Red = true
-};
+public:
+	Printer(bool run, std::function<void(void)> f)
+	: run_(run), func(f)
+	{}
+	~Printer()
+	{
+		if (run_)
+			func();
+	}
 
-struct Node
-{
-	Node(int d, Color c)
-	: data(d), color(c){}
-
-	int data;
-	Color color;
-	std::shared_ptr<Node> left;
-	std::shared_ptr<Node> right;
+	bool run_;
+	std::function<void(void)> func;
 };
-using NodeSP = std::shared_ptr<Node>;
 
 class RedBlackBST
 {
 public:
+	bool debugPrintOn{false};
+
+	enum class Color : bool
+	{
+		Black = false,
+		Red = true
+	};
+
+	struct Node
+	{
+		Node(int d, Color c)
+		: data(d), color(c){}
+
+		bool is_2node() const
+		{
+			if (!is_red(this) && !is_red(left.get()))
+				return true;
+
+			return false;
+		}
+
+		bool is_red(const Node* n) const
+		{
+			if (!n) return false;
+			return color == Color::Red;
+		}
+
+		int data;
+		Color color;
+		std::shared_ptr<Node> left;
+		std::shared_ptr<Node> right;
+	};
+	using NodeSP = std::shared_ptr<Node>;
+
+
 	RedBlackBST()
 	: root_(nullptr)
 	{}
@@ -65,21 +102,23 @@ public:
 
 	void RemoveMin()
 	{
-		// 루트가 2노드고 자식둘이 다 2노드면 합쳐서 4노드로 만든다.
-//		if (root_ && is_2node(root_) && root_->left && root_->right && is_2node(root_->left) && is_2node(root_->right))
-//		{
-//			flipColorsReverse(root_);
-//		}
-
+		if (!root_)
+			return;
+		if (!is_red(root_->left) && !is_red(root_->right))
+			root_->color = Color::Red;
 		root_ = remove_min(root_);
-
-		if (root_) root_->color = Color::Black;
+		if (root_)
+			root_->color = Color::Black;
 	}
 
 	void RemoveMax()
 	{
-		// not implemented yet.
-		assert(false);
+
+	}
+
+	void Remove(int data)
+	{
+
 	}
 
 	void PrintInside()
@@ -88,7 +127,7 @@ public:
 	}
 
 private:
-	static bool is_red(NodeSP& n)
+	static bool is_red(const NodeSP& n)
 	{
 		if (!n)
 			return false;
@@ -99,26 +138,19 @@ private:
 		return false;
 	}
 
-	static void flipColors(NodeSP& n)
+	static void flipColor(NodeSP& n)
 	{
 		if (!n) return;
-
-		DEBUGF("flipColor", n->data);
-
-		n->color = Color::Red;
-		if (n->left) n->left->color = Color::Black;
-		if (n->right) n->right->color = Color::Black;
+		n->color = (n->color == Color::Black) ? Color::Red : Color::Black;
 	}
 
-	static void flipColorsReverse(NodeSP& n)
+	static void flipColors(NodeSP& n)
 	{
-		if (!n) return;
+		DEBUGF("flipColor", n->data);
 
-		DEBUGF("flipColorReverse", n->data);
-
-		n->color = Color::Black;
-		if (n->left) n->left->color = Color::Red;
-		if (n->right) n->right->color = Color::Red;
+		flipColor(n);
+		flipColor(n->left);
+		flipColor(n->right);
 	}
 
 	static NodeSP rotate_left(NodeSP n)
@@ -126,9 +158,10 @@ private:
 		DEBUGF("rotate_left", n->data);
 
 		auto child = n->right;
-		assert(child);
-		n->right = child->left;
+		if (!child)
+			return n;
 
+		n->right = child->left;
 		child->left = n;
 
 		child->color = n->color;
@@ -142,15 +175,30 @@ private:
 		DEBUGF("rotate_right", n->data);
 
 		auto child = n->left;
-		assert(child);
-		n->left = child->right;
+		if (!child)
+			return n;
 
+		n->left = child->right;
 		child->right = n;
 
 		child->color = n->color;
 		n->color = Color::Red;
 
 		return child;
+	}
+
+	static NodeSP balance(NodeSP n)
+	{
+		DEBUGF("balance", n->data);
+
+		assert(n);
+		if (!n) return nullptr;
+
+		if (!is_red(n->left) && is_red(n->right)) n = rotate_left(n);
+		if (is_red(n->left) && is_red(n->left->left)) n = rotate_right(n);
+		if (is_red(n->left) && is_red(n->right)) flipColors(n);
+
+		return n;
 	}
 
 	static NodeSP insert_as_23tree(NodeSP n, int data)
@@ -165,11 +213,7 @@ private:
 			n->right = insert_as_23tree(n->right, data);
 
 		// way up balancing
-		if (!is_red(n->left) && is_red(n->right)) n = rotate_left(n);
-		if (is_red(n->left) && is_red(n->left->left)) n = rotate_right(n);
-		if (is_red(n->left) && is_red(n->right)) flipColors(n);
-
-		return n;
+		return n = balance(n);
 	}
 
 	// 이거 왜 필요한 건데??
@@ -193,96 +237,42 @@ private:
 		return n;
 	}
 
-	static bool is_2node(NodeSP n)
+	static NodeSP moveRedLeft(NodeSP n)
 	{
-		assert(n);
+		DEBUGF("moveRedLeft", n->data);
 
-		if (!is_red(n) && !is_red(n->left))
-			return true;
-
-		return false;
-	}
-
-	// current->left 가 2node 가 아니도록 만든다.
-	static NodeSP Preprocess_to_remove_min(NodeSP current)
-	{
-		// 234 tree 관점에서,
-			// 1. left node 가 not 2node 면 넘어간다.
-			// 2. left node 가 2node 고 immediate sibling 이 not 2node 면
-				// key 를 하나 빌린다.
-			// 3. left node 가 2node 고 immediate sibling 이 2node 면
-				// 부모에게서 key를 하나 빌리고 left child, sibling 을 합쳐서
-				// 4node 를 만든다.
-
-		assert(current);
-		if (!current) return current;
-
-		auto left = current->left;
-		if (!left)
+		flipColors(n);
+		if (n->right && is_red(n->right->left))
 		{
-			assert(0);
-			return current;
+			n->right = rotate_right(n->right);
+			n = rotate_left(n);
 		}
 
-		if (!is_2node(current->left))
-		{
-			return current;
-		}
-		else if (current->right && !is_2node(current->right))
-		{
-			current->right = rotate_right(current->right);
-			flipColors(current->right);
-			current = rotate_left(current);
-			//flipColorsReverse(current->left);
-			auto flip = [](auto n)
-			{
-				DEBUGF("flip lambda", n->data);
-				n->color = Color::Black;
-				if (n->left) n->left->color = Color::Red;
-				//if (n->right) n->right->color = Color::Red;
-			};
-			flip(current->left);
-
-			current->right = Postprocess_to_remove_min(current->right);
-		}
-		else
-		{
-			flipColorsReverse(current);
-		}
-
-		return current;
-	}
-
-	static NodeSP Postprocess_to_remove_min(NodeSP n)
-	{
-		assert(n);
-		if (!n) return n;
-
-		// way up balancing
-		if (!is_red(n->left) && is_red(n->right)) n = rotate_left(n);
-		if (is_red(n->left) && is_red(n->left->left)) n = rotate_right(n);
-		if (is_red(n->left) && is_red(n->right)) flipColors(n);
 		return n;
 	}
 
-	// input current 는 2node가 아니어야 한다.
-	static NodeSP remove_min(NodeSP current)
+	static NodeSP remove_min(NodeSP n)
 	{
-		if (!current)
-			return current;
+		// n is not 2node,
+		// and n exists.
 
-		if (!current->left)
+		DEBUGF("remove_min", n->data);
+
+		assert(n);
+
+		if (!n->left)
 		{
-//			assert(is_red(current));
-//			assert(!is_red(current->right));
-			return current->right;
+			return nullptr;	//left 가 없으면 right 도 없어야 함.
 		}
 
-		current = Preprocess_to_remove_min(current);
-		current->left = remove_min(current->left);
-		current = Postprocess_to_remove_min(current);
+		if (n->left->is_2node())
+		{
+			n = moveRedLeft(n);
+		}
 
-		return current;
+		n->left = remove_min(n->left);
+
+		return balance(n);
 	}
 
 	// [DEBUG]
@@ -300,7 +290,7 @@ private:
 		else return l;
 	}
 
-	static void print_inside(NodeSP n, int level)
+	static void print_inside(const NodeSP& n, int level)
 	{
 		if (n)
 		{
