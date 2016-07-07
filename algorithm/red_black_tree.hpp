@@ -15,13 +15,13 @@
 #include <functional>
 
 #ifdef _RB_DEBUG_
-	#define DEBUGF(f, x) printf("[DEBUG]%s( %d )\n", f, x);\
+	#define static
+	#define DEBUGF(f, x) printf("\t[DEBUG]%s( %d )\n", f, x);\
 		if (debugPrintOn) PrintInside();
+	#define DEBUGS(f, x) printf("[DEBUG]%s( %d )\n", f, x);
 #else
 	#define DEBUGF(f, x) ;
 #endif
-
-#define static
 
 namespace redblacktree {
 
@@ -44,7 +44,7 @@ public:
 class RedBlackBST
 {
 public:
-	bool debugPrintOn{false};
+	bool debugPrintOn {false};
 
 	enum class Color : bool
 	{
@@ -65,10 +65,16 @@ public:
 			return false;
 		}
 
-		bool is_red(const Node* n) const
+		bool is_red(const Node* const n) const
 		{
 			if (!n) return false;
-			return color == Color::Red;
+			return n->color == Color::Red;
+		}
+
+		static bool is_red(const Node* const n)
+		{
+			if (!n) return false;
+			return n->color == Color::Red;
 		}
 
 		int data;
@@ -102,18 +108,24 @@ public:
 
 	void RemoveMin()
 	{
-		if (!root_)
-			return;
+		if (!root_) return;
 		if (!is_red(root_->left) && !is_red(root_->right))
 			root_->color = Color::Red;
+
 		root_ = remove_min(root_);
-		if (root_)
-			root_->color = Color::Black;
+
+		if (root_) root_->color = Color::Black;
 	}
 
 	void RemoveMax()
 	{
+		if (!root_) return;
+		if (!is_red(root_->left) && !is_red(root_->right))
+			root_->color = Color::Red;
 
+		root_ = remove_max(root_);
+
+		if (root_) root_->color = Color::Black;
 	}
 
 	void Remove(int data)
@@ -189,7 +201,7 @@ private:
 
 	static NodeSP balance(NodeSP n)
 	{
-		DEBUGF("balance", n->data);
+		DEBUGS("balance", n->data);
 
 		assert(n);
 		if (!n) return nullptr;
@@ -239,7 +251,7 @@ private:
 
 	static NodeSP moveRedLeft(NodeSP n)
 	{
-		DEBUGF("moveRedLeft", n->data);
+		DEBUGS("moveRedLeft", n->data);
 
 		flipColors(n);
 		if (n->right && is_red(n->right->left))
@@ -251,27 +263,63 @@ private:
 		return n;
 	}
 
+	static NodeSP moveRedRight(NodeSP n)
+	{
+		DEBUGS("moveRedRight", n->data);
+
+		if (is_red(n->left))
+		{
+			n = rotate_right(n);
+		}
+		else if (!is_red(n->left) && !is_red(n->right))
+		{
+			flipColors(n);
+			if (n->left && is_red(n->left->left))
+			{
+				n = rotate_right(n);
+			}
+		}
+
+		return n;
+	}
+
 	static NodeSP remove_min(NodeSP n)
 	{
 		// n is not 2node,
 		// and n exists.
 
-		DEBUGF("remove_min", n->data);
-
+		DEBUGS("remove_min", n->data);
 		assert(n);
 
 		if (!n->left)
-		{
 			return nullptr;	//left 가 없으면 right 도 없어야 함.
-		}
 
 		if (n->left->is_2node())
-		{
 			n = moveRedLeft(n);
-		}
 
 		n->left = remove_min(n->left);
+		return balance(n);
+	}
 
+	static NodeSP remove_max(NodeSP n)
+	{
+		DEBUGS("remove_max", n->data);
+		assert(n);
+
+		if (!n->right)
+		{
+			assert(!n->is_2node());
+
+			//return n;
+			if (n->left)
+				n->left->color = n->color;
+			return n->left; // right 가 없어도 red 인 left 는 있을 수 있다.
+		}
+
+		if (n->right->is_2node())
+			n = moveRedRight(n);
+
+		n->right = remove_max(n->right);
 		return balance(n);
 	}
 
