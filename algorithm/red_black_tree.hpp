@@ -130,7 +130,13 @@ public:
 
 	void Remove(int data)
 	{
+		if (!root_) return;
+		if (!is_red(root_->left) && !is_red(root_->right))
+			root_->color = Color::Red;
 
+		root_ = remove(root_, data);
+
+		if (root_) root_->color = Color::Black;
 	}
 
 	void PrintInside()
@@ -263,30 +269,13 @@ private:
 		return n;
 	}
 
-	static NodeSP moveRedRight(NodeSP n)
-	{
-		DEBUGS("moveRedRight", n->data);
-
-		if (is_red(n->left))
-		{
-			n = rotate_right(n);
-		}
-		else if (!is_red(n->left) && !is_red(n->right))
-		{
-			flipColors(n);
-			if (n->left && is_red(n->left->left))
-			{
-				n = rotate_right(n);
-			}
-		}
-
-		return n;
-	}
 
 	static NodeSP remove_min(NodeSP n)
 	{
-		// n is not 2node,
-		// and n exists.
+		// args: n 은 not 2node 여야 한다.
+		// n->right 는 red 가 아니다.
+		// n->left 가 black 이면 반드시 n->right 가 존재하며,
+		// n->left 가 없으면 n->right 도 없다.
 
 		DEBUGS("remove_min", n->data);
 		assert(n);
@@ -301,25 +290,112 @@ private:
 		return balance(n);
 	}
 
+	static NodeSP moveRedRight(NodeSP n)
+	{
+		// n 은 not 2node
+		// n->left 는 2node
+		// n->right 는 2node
+		// n->right 를 not 2node 로 만든다.
+
+		DEBUGS("moveRedRight", n->data);
+
+		flipColors(n);
+		if (n->left && is_red(n->left->left))
+		{
+			n = rotate_right(n);
+		}
+
+		return n;
+	}
+
 	static NodeSP remove_max(NodeSP n)
 	{
-		DEBUGS("remove_max", n->data);
-		assert(n);
+		// args: n 은 not 2node 여야 한다.
+		// n->right 는 red 가 아니다.
+		// n->left 가 black 이면 반드시 n->right 가 존재하며,
+		// n->left 가 없으면 n->right 도 없다.
 
+		assert(n);
+		DEBUGS("remove_max", n->data);
+
+		if (is_red(n->left))
+		{
+			n = rotate_right(n);
+		}
 		if (!n->right)
 		{
 			assert(!n->is_2node());
-
-			//return n;
-			if (n->left)
-				n->left->color = n->color;
-			return n->left; // right 가 없어도 red 인 left 는 있을 수 있다.
+			return nullptr;
 		}
 
 		if (n->right->is_2node())
 			n = moveRedRight(n);
 
 		n->right = remove_max(n->right);
+		return balance(n);
+	}
+
+	static NodeSP find_min(NodeSP n)
+	{
+		DEBUGS("find_min", n->data);
+
+		if (!n) return nullptr;
+
+		if (n->left) return find_min(n->left);
+
+		return n;
+	}
+
+	static NodeSP remove(NodeSP n, int data)
+	{
+		// args: n 은 not 2node 여야 한다.
+		// n->right 는 red 가 아니다.
+		// n->left 가 black 이면 반드시 n->right 가 존재하며,
+		// n->left 가 없으면 n->right 도 없다.
+
+		assert(n);
+		DEBUGS("remove", n->data);
+
+		if (data < n->data)
+		{
+			if (!n->left)
+			{
+				return n;
+			}
+
+			if (n->left->is_2node())
+				n = moveRedLeft(n);	// n red 고, left, right 모두 black 임.
+
+			n->left = remove(n->left, data);
+		}
+		else
+		{
+			if (is_red(n->left))
+			{
+				n = rotate_right(n);
+			}
+			if (!n->right)
+			{
+				if (data == n->data)
+					return nullptr;
+				else
+					return n;	// 여기는 올 수 없나??
+			}
+			if (n->right->is_2node())
+				n = moveRedRight(n);
+
+			if (data == n->data)
+			{
+				auto right_min = find_min(n->right);
+				n->data = right_min->data;
+				n->right = remove_min(n->right);
+			}
+			else
+			{
+				n->right = remove(n->right, data);
+			}
+		}
+
 		return balance(n);
 	}
 

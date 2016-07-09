@@ -200,9 +200,10 @@ void RedBlack()
 	std::cout << std::endl;
 
 	//tree.debugPrintOn = true;
-	for (int i = 0; i < 10; ++i)
+	for (int i = 9; i >= 0; --i)
 	{
-		tree.RemoveMax();
+		//tree.RemoveMax();
+		tree.Remove(i);
 		std::cout << "print " << i << "\n";
 		tree.PrintInside();
 		std::cout << "depth: " << tree.CountRedblackDepth() << std::endl;
