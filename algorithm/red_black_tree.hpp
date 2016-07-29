@@ -14,14 +14,8 @@
 #include <cassert>
 #include <functional>
 
-#ifdef _RB_DEBUG_
-	#define static
-	#define DEBUGF(f, x) printf("\t[DEBUG]%s( %d )\n", f, x);\
-		if (debugPrintOn) PrintInside();
-	#define DEBUGS(f, x) printf("[DEBUG]%s( %d )\n", f, x);
-#else
-	#define DEBUGF(f, x) ;
-#endif
+#define DEBUGF(f, x) ;
+#define DEBUGS(f, x) ;
 
 namespace redblacktree {
 
@@ -63,12 +57,6 @@ public:
 				return true;
 
 			return false;
-		}
-
-		bool is_red(const Node* const n) const
-		{
-			if (!n) return false;
-			return n->color == Color::Red;
 		}
 
 		static bool is_red(const Node* const n)

@@ -19,6 +19,8 @@
 #define _RB_DEBUG_
 #include "red_black_tree.hpp"
 
+#include "count_num_under_1000.hpp"
+
 void TestBinaryTree()
 {
 	using namespace std;
@@ -211,12 +213,44 @@ void RedBlack()
 	}
 }
 
+void CodingDojangQuiz()
+{
+//	CodingDojang::CountNumberUnder1000::Run();
+//	CodingDojang::SumMultiplyDivededNumbersUnder1000::Run();
+
+//	CodingDojang::TabToSpaceChanger::Run(
+//R"(	for (int i = 9; i >= 0; --i)
+//	 {
+//		 //tree.RemoveMax();
+//		 tree.Remove(i);
+//		 std::cout << "print " << i << "\n";
+//		 tree.PrintInside();
+//		 std::cout << "depth: " << tree.CountRedblackDepth() << std::endl;
+//		 std::cout << std::endl;
+//	 }
+//)"
+//	);
+
+	//CodingDojang::BoardPager::Test();
+
+	//CodingDojang::Sum3or5::Run();
+
+	//CodingDojang::SelfNumberFinder::Run();
+
+	//CodingDojang::All8Counter::Run();
+
+	//CodingDojang::ShortestDistPairFinder::Run();
+
+	CodingDojang::SpiralArrayPrinter::Run();
+}
+
 int main(int argc, const char * argv[])
 {
 	//TestBST();
 	//TestBinaryTree();
 	//TestAvl();
-	RedBlack();
+	//RedBlack();
+	CodingDojangQuiz();
 
     return 0;
 }
