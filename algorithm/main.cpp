@@ -21,6 +21,10 @@
 
 #include "count_num_under_1000.hpp"
 
+#include "crack_interview_ch1.hpp"
+#include "crack_interview_ch2.hpp"
+#include "crack_interview_ch3.hpp"
+
 void TestBinaryTree()
 {
 	using namespace std;
@@ -241,7 +245,23 @@ void CodingDojangQuiz()
 
 	//CodingDojang::ShortestDistPairFinder::Run();
 
-	CodingDojang::SpiralArrayPrinter::Run();
+	//CodingDojang::SpiralArrayPrinter::Run();
+
+	//CodingDojang::StringCompressorTest::Run();
+}
+
+void CrackInterview() {
+	using namespace crack_coding_interview;
+
+//	ch_1_array_string::Q1_1();
+//	ch_1_array_string::Q1_2();
+//	ch_1_array_string::Q1_3();
+
+//	ch_2_linked_list::Q2_5::Run();
+//	ch_2_linked_list::Q2_5::RunDash();
+
+//	ch_3_stack_queue::Q3_1::Run();
+	ch_3_stack_queue::Q3_4::Run();
 }
 
 int main(int argc, const char * argv[])
@@ -250,7 +270,9 @@ int main(int argc, const char * argv[])
 	//TestBinaryTree();
 	//TestAvl();
 	//RedBlack();
-	CodingDojangQuiz();
+	//CodingDojangQuiz();
+
+	CrackInterview();
 
     return 0;
 }

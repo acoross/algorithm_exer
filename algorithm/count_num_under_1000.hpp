@@ -16,6 +16,9 @@
 #include <algorithm>
 #include <limits>
 #include <memory>
+#include <list>
+#include <stdio.h>
+#include <stdlib.h>
 
 namespace CodingDojang {
 
@@ -148,7 +151,8 @@ namespace CodingDojang {
 		static void Run() {
 			auto last = std::chrono::system_clock::now();
 			for (int i = 0; i < 100000; ++i) {
-				int sum1 = sum_all_3_5_under_1(1000);
+				//int sum1 =
+				sum_all_3_5_under_1(1000);
 				//std::cout << "sum1: " << sum1 << std::endl;
 			}
 			auto current = std::chrono::system_clock::now();
@@ -157,7 +161,8 @@ namespace CodingDojang {
 
 			last = std::chrono::system_clock::now();
 			for (int i = 0; i < 100000; ++i) {
-				int sum2 = sum_all_3_5_under_2(1000);
+				//int sum2 =
+				sum_all_3_5_under_2(1000);
 				//std::cout << "sum2: " << sum2 << std::endl;
 			}
 			current = std::chrono::system_clock::now();
@@ -388,6 +393,53 @@ namespace CodingDojang {
 			const int bottom_;
 			const int right_;
 		};
+	};
+
+	class StringCompressorTest {
+	public:
+		class StringCompressor {
+		public:
+			static std::string Run(const std::string input) {
+				std::list<std::pair<char, int>> char_counts;
+
+				// parse input string
+				const char* p = input.c_str();
+				
+				char current = *p;
+				int count = 0;
+				for(;;) {
+					if (*p == current) {
+						++count;
+					} else {
+						char_counts.push_back(std::make_pair(current, count));
+						current = *p;
+						count = 1;
+
+						if (*p == '\0')
+							break;
+					}
+					++p;
+				}
+
+				// make output string
+				const auto siz = char_counts.size();
+				std::unique_ptr<char[]> buf(new char[siz * 4 + 1]{0,});
+				char* bp = buf.get();
+				for (auto it = char_counts.begin(); it != char_counts.end(); ++it) {
+					int count = sprintf(bp, "%c%d", it->first, it->second);
+					bp += count;
+				}
+
+				return std::string(buf.get());
+			}
+		};
+
+		static void Run() {
+			const std::string input("aaabbcccccca");
+
+			auto sc = StringCompressor::Run(input);
+			std::cout << "string compressor: " << input.c_str() << " -> " << sc.c_str() << std::endl;
+		}
 	};
 }
 
