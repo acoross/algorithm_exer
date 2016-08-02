@@ -15,6 +15,7 @@
 #include <string>
 #include <cassert>
 #include <exception>
+#include <list>
 
 namespace crack_coding_interview {
 	namespace ch_3_stack_queue {
@@ -43,6 +44,10 @@ namespace crack_coding_interview {
 
 			NodeSP Peek() {
 				return top_;
+			}
+
+			bool isEmpty() const {
+				return top_ == nullptr;
 			}
 
 		private:
@@ -261,6 +266,199 @@ namespace crack_coding_interview {
 					Move(count - 1, src, buf, dest);
 					Move(1, src, dest, buf);	// buf 필요 없음
 					Move(count - 1, buf, dest, src);
+				}
+			}
+		};
+
+		class Q3_5 {
+			/* 두 개의 스택을 이용해 queue 를 구현해 보아라. */
+		public:
+			class MyQueue {
+			public:
+				void Enqueue(int data) {
+					stack_in_.Push(data);
+				}
+
+				int Dequeue() {
+					while (auto p = stack_in_.Pop()) {
+						stack_out_.Push(p->data);
+					}
+					if (auto p = stack_out_.Pop()) {
+						int ret = p->data;
+
+						while (auto p2 = stack_out_.Pop()) {
+							stack_in_.Push(p2->data);
+						}
+
+						return ret;
+					}
+
+					assert(false);
+				}
+
+			private:
+				Stack stack_in_;
+				Stack stack_out_;
+			};
+
+			static void Run() {
+				MyQueue queue;
+				for (int i = 100; i < 110; ++i)
+					queue.Enqueue(i);
+
+				for (int i = 0; i < 10; ++i)
+					std::cout << queue.Dequeue() << ", ";
+				std::cout << std::endl;
+			}
+		};
+
+		class Q3_6 {
+			/*
+			 큰 값이 위에 오도록 스택을 오름차순 정렬.
+			 여벌 스택은 하나까지 사용 가능.
+			 스택은 push, pop, peek, isEmpty 네 가지 연산을 제공한다.
+			*/
+		public:
+			static void Run() {
+				Stack stack;
+				for (int i = 0; i < 10; ++i) {
+					stack.Push(i);
+				}
+
+				SortStackAsc(stack);
+
+				std::cout << "SortStackAsc: \n";
+				while (auto p = stack.Pop()) {
+					std::cout << p->data << ", ";
+				}
+				std::cout << std::endl;
+			}
+
+		private:
+			static void SortStackAsc(Stack& stack) {
+				// 임시 스택에 삽입정렬한다.
+				// 임시 스택에는 큰 값이 아래에 들어가야 한다.
+
+				Stack desc_order_stack;
+
+				while (auto p = stack.Pop()) {
+					insert_sort(desc_order_stack, stack, p->data);
+				}
+
+				while (auto p = desc_order_stack.Pop()) {
+					stack.Push(p->data);
+				}
+			}
+
+			static void insert_sort(Stack& stack, Stack& buf, int data) {
+				// O(N^2)
+				while (!stack.isEmpty()) {
+					int peek = stack.Peek()->data;
+					if (peek < data) {
+						buf.Push(stack.Pop()->data);
+					} else {
+						stack.Push(data);
+						return;
+					}
+				}
+
+				stack.Push(data);
+			}
+		};
+
+		class Q3_7 {
+			/* 먼저 들어온 동물이 먼저 나가는 동물 쉼터가 있다.
+			 개와 고양이만 수용할 수 있다.
+			 사람은 개와 고양이 중 선택해 입양할 수 있다.
+			 */
+		public:
+			enum class AnimalType {
+				Dog,
+				Cat
+			};
+
+			struct Animal {
+				Animal(int id, AnimalType type) : id(id), type(type) {}
+				int id;
+				AnimalType type;
+			};
+			using AnimalSP = std::shared_ptr<Animal>;
+
+			class AnimalShelter {
+			public:
+				void enqueue(AnimalType type) {
+					switch (type) {
+						case AnimalType::Dog:
+							dog_list_.emplace_back(last_id_++, type);
+							break;
+						case AnimalType::Cat:
+							cat_list_.emplace_back(last_id_++, type);
+							break;
+						default:
+							assert(false);
+							break;
+					}
+				}
+
+				AnimalSP dequeueAny() {
+					if (peek_id(dog_list_) < peek_id(cat_list_)) {
+						return dequeueDog();
+					} else {
+						return dequeueCat();
+					}
+				}
+
+				AnimalSP dequeueDog() {
+					auto p = dog_list_.begin();
+					if (p != dog_list_.end()) {
+						auto ret = std::make_shared<Animal>(p->id, p->type);
+						dog_list_.pop_front();
+						return ret;
+					}
+					return nullptr;
+				}
+
+				AnimalSP dequeueCat() {
+					auto p = cat_list_.begin();
+					if (p != cat_list_.end()) {
+						auto ret = std::make_shared<Animal>(p->id, p->type);
+						cat_list_.pop_front();
+						return ret;
+					}
+					return nullptr;
+				}
+
+				static int peek_id(std::list<Animal>& list) {
+					auto it = list.begin();
+					if (it != list.end()) {
+						return it->id;
+					}
+					return -1;
+				}
+
+			private:
+				int last_id_{0};
+				std::list<Animal> dog_list_;
+				std::list<Animal> cat_list_;
+			};
+
+			static void Run() {
+				AnimalShelter shelter;
+
+				for (int i = 0; i < 20; ++i) {
+					if (i % 3 == 0) {
+						shelter.enqueue(AnimalType::Dog);
+					} else {
+						shelter.enqueue(AnimalType::Cat);
+					}
+				}
+
+				for (int i = 0; i < 3; ++i) {
+					shelter.dequeueCat();
+				}
+
+				while (auto p = shelter.dequeueAny()) {
+					std::cout << p->id << ", " << ((int)p->type == 0 ? "dog" : "cat") << std::endl;
 				}
 			}
 		};

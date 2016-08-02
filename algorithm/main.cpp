@@ -25,6 +25,7 @@
 #include "crack_interview_ch1.hpp"
 #include "crack_interview_ch2.hpp"
 #include "crack_interview_ch3.hpp"
+#include "crack_interview_ch4.hpp"
 
 #include "sort.hpp"
 
@@ -266,7 +267,12 @@ void CrackInterview() {
 //	ch_2_linked_list::Q2_5::RunDash();
 
 //	ch_3_stack_queue::Q3_1::Run();
-	ch_3_stack_queue::Q3_4::Run();
+//	ch_3_stack_queue::Q3_4::Run();
+//	ch_3_stack_queue::Q3_5::Run();
+//	ch_3_stack_queue::Q3_6::Run();
+//	ch_3_stack_queue::Q3_7::Run();
+
+	ch_4_tree_graph::Q4_3::Run();
 }
 
 void SortTest() {
@@ -296,8 +302,8 @@ int main(int argc, const char * argv[])
 	//RedBlack();
 	//CodingDojangQuiz();
 
-	//CrackInterview();
-	SortTest();
+	CrackInterview();
+	//SortTest();
 
     return 0;
 }
