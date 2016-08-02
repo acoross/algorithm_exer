@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B032040B1D501565000DFF95 /* coding_dojang.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B03204091D501565000DFF95 /* coding_dojang.cpp */; };
+		B032040F1D50A3EF000DFF95 /* sort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B032040D1D50A3EF000DFF95 /* sort.cpp */; };
 		B05614F31D4F9B060034D48F /* crack_interview_ch2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B05614F11D4F9B060034D48F /* crack_interview_ch2.cpp */; };
 		B05614F61D4FA7080034D48F /* crack_interview_ch3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B05614F41D4FA7080034D48F /* crack_interview_ch3.cpp */; };
 		B05FE3311D1ED42600E49373 /* bst.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B05FE3301D1ED42600E49373 /* bst.cpp */; };
@@ -31,6 +33,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B03204091D501565000DFF95 /* coding_dojang.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = coding_dojang.cpp; sourceTree = "<group>"; };
+		B032040A1D501565000DFF95 /* coding_dojang.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = coding_dojang.hpp; sourceTree = "<group>"; };
+		B032040D1D50A3EF000DFF95 /* sort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sort.cpp; sourceTree = "<group>"; };
+		B032040E1D50A3EF000DFF95 /* sort.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = sort.hpp; sourceTree = "<group>"; };
 		B05614F11D4F9B060034D48F /* crack_interview_ch2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crack_interview_ch2.cpp; sourceTree = "<group>"; };
 		B05614F21D4F9B060034D48F /* crack_interview_ch2.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = crack_interview_ch2.hpp; sourceTree = "<group>"; };
 		B05614F41D4FA7080034D48F /* crack_interview_ch3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crack_interview_ch3.cpp; sourceTree = "<group>"; };
@@ -64,6 +70,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B032040C1D50A3E5000DFF95 /* sort */ = {
+			isa = PBXGroup;
+			children = (
+				B032040D1D50A3EF000DFF95 /* sort.cpp */,
+				B032040E1D50A3EF000DFF95 /* sort.hpp */,
+			);
+			name = sort;
+			sourceTree = "<group>";
+		};
 		B05FE3321D21646B00E49373 /* avl */ = {
 			isa = PBXGroup;
 			children = (
@@ -94,6 +109,7 @@
 		B084666D1D1C18AD0099ED66 /* algorithm */ = {
 			isa = PBXGroup;
 			children = (
+				B032040C1D50A3E5000DFF95 /* sort */,
 				B0CE173E1D4B603900883590 /* CrackInterview */,
 				B0CE173A1D464BDE00883590 /* dojang */,
 				B0F28FE41D2BF0F0005E1057 /* red_black_tree */,
@@ -110,6 +126,8 @@
 			children = (
 				B0CE173B1D464BF900883590 /* count_num_under_1000.cpp */,
 				B0CE173C1D464BF900883590 /* count_num_under_1000.hpp */,
+				B03204091D501565000DFF95 /* coding_dojang.cpp */,
+				B032040A1D501565000DFF95 /* coding_dojang.hpp */,
 			);
 			name = dojang;
 			sourceTree = "<group>";
@@ -210,8 +228,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B032040F1D50A3EF000DFF95 /* sort.cpp in Sources */,
 				B090B0871D22CB19007F3EFF /* avl_tree.cpp in Sources */,
 				B05FE3311D1ED42600E49373 /* bst.cpp in Sources */,
+				B032040B1D501565000DFF95 /* coding_dojang.cpp in Sources */,
 				B0CE17441D4B644400883590 /* crack_interview_ch1.cpp in Sources */,
 				B05614F61D4FA7080034D48F /* crack_interview_ch3.cpp in Sources */,
 				B0CE173D1D464BF900883590 /* count_num_under_1000.cpp in Sources */,

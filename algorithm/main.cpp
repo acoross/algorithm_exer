@@ -20,10 +20,13 @@
 #include "red_black_tree.hpp"
 
 #include "count_num_under_1000.hpp"
+#include "coding_dojang.hpp"
 
 #include "crack_interview_ch1.hpp"
 #include "crack_interview_ch2.hpp"
 #include "crack_interview_ch3.hpp"
+
+#include "sort.hpp"
 
 void TestBinaryTree()
 {
@@ -248,6 +251,8 @@ void CodingDojangQuiz()
 	//CodingDojang::SpiralArrayPrinter::Run();
 
 	//CodingDojang::StringCompressorTest::Run();
+
+	coding_dojang::MinusPlusSorter::Run();
 }
 
 void CrackInterview() {
@@ -264,15 +269,31 @@ void CrackInterview() {
 	ch_3_stack_queue::Q3_4::Run();
 }
 
+void SortTest() {
+	{
+		std::vector<int> arr{0, -1, 3, 1, 100, 6, -2};
+		sort::QuickSorter::Sort(arr);
+	}
+	{
+		std::vector<int> arr{0, -1, 3, 1, 100, 6, -2};
+		sort::MergeSorter::Sort(arr);
+	}
+	{
+		std::vector<int> arr{0, -1, 3, 1, 100, 6, -2};
+		sort::BubbleSorter::Sort(arr);
+	}
+}
+
 int main(int argc, const char * argv[])
 {
 	//TestBST();
 	//TestBinaryTree();
 	//TestAvl();
 	//RedBlack();
-	//CodingDojangQuiz();
+	CodingDojangQuiz();
 
-	CrackInterview();
+	//CrackInterview();
+	//SortTest();
 
     return 0;
 }
