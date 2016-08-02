@@ -282,6 +282,10 @@ void SortTest() {
 		std::vector<int> arr{0, -1, 3, 1, 100, 6, -2};
 		sort::BubbleSorter::Sort(arr);
 	}
+	{
+		std::vector<int> arr{0, -1, 3, 1, 100, 6, -2};
+		sort::HeapSorter::Sort(arr);
+	}
 }
 
 int main(int argc, const char * argv[])
@@ -290,10 +294,10 @@ int main(int argc, const char * argv[])
 	//TestBinaryTree();
 	//TestAvl();
 	//RedBlack();
-	CodingDojangQuiz();
+	//CodingDojangQuiz();
 
 	//CrackInterview();
-	//SortTest();
+	SortTest();
 
     return 0;
 }

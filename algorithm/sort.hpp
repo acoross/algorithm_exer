@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 
+#include <array>
 #include <vector>
 #include <list>
 #include <iostream>
@@ -121,6 +122,51 @@ namespace sort {
 				}
 			}
 			print(arr, 0, arr.size() - 1);
+		}
+	};
+
+	class HeapSorter {
+	public:
+		static void Sort(std::vector<int>& arr) {
+			print(arr, 0, arr.size() - 1);
+			heapify(arr);
+			for (int i = (int)arr.size() -1; i > 0; --i) {
+				swap(arr, 0, i);
+				downheap(arr, 0, i - 1);
+			}
+			print(arr, 0, arr.size() - 1);
+		}
+
+	private:
+		static void heapify(std::vector<int>& arr) {
+			for (int i = (int)arr.size() - 1; i >= 0; --i) {
+				downheap(arr, (size_t)i, arr.size() - 1);
+			}
+		}
+
+		static void downheap(std::vector<int>& arr, size_t s, size_t e) {
+			if (s > e) return;
+
+			auto left = s * 2 + 1;
+			auto right = s * 2 + 2;
+
+			auto max_i = s;
+			int max = arr[s];
+			if (left <= e && max < arr[left]) {
+				max_i = left;
+				max = arr[left];
+			}
+			if (right <= e && max < arr[right]) {
+				max_i = right;
+				max = arr[right];
+			}
+
+			if (max_i != s) {
+				int tmp = arr[s];
+				arr[s] = max;
+				arr[max_i] = tmp;
+				downheap(arr, max_i, e);
+			}
 		}
 	};
 }
