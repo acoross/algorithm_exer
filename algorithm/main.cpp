@@ -26,6 +26,8 @@
 #include "crack_interview_ch2.hpp"
 #include "crack_interview_ch3.hpp"
 #include "crack_interview_ch4.hpp"
+#include "crack_interview_ch5.hpp"
+#include "crack_interview_ch9.hpp"
 
 #include "sort.hpp"
 
@@ -221,8 +223,7 @@ void RedBlack()
 	}
 }
 
-void CodingDojangQuiz()
-{
+void CodingDojangQuiz() {
 //	CodingDojang::CountNumberUnder1000::Run();
 //	CodingDojang::SumMultiplyDivededNumbersUnder1000::Run();
 
@@ -240,20 +241,15 @@ void CodingDojangQuiz()
 //	);
 
 	//CodingDojang::BoardPager::Test();
-
 	//CodingDojang::Sum3or5::Run();
-
 	//CodingDojang::SelfNumberFinder::Run();
-
 	//CodingDojang::All8Counter::Run();
-
 	//CodingDojang::ShortestDistPairFinder::Run();
-
 	//CodingDojang::SpiralArrayPrinter::Run();
-
 	//CodingDojang::StringCompressorTest::Run();
 
-	coding_dojang::MinusPlusSorter::Run();
+//	coding_dojang::MinusPlusSorter::Run();
+	coding_dojang::k_palindrome::Test();
 }
 
 void CrackInterview() {
@@ -272,7 +268,13 @@ void CrackInterview() {
 //	ch_3_stack_queue::Q3_6::Run();
 //	ch_3_stack_queue::Q3_7::Run();
 
-	ch_4_tree_graph::Q4_3::Run();
+//	ch_4_tree_graph::Q4_3::Run();
+//	ch_4_tree_graph::Q4_8::Run();
+
+//	ch_5_bit_operation::Q5_1::Test();
+//	ch_5_bit_operation::Q5_3::Test();
+
+	ch_9_recursion_dynamic::Q9_3::Test();
 }
 
 void SortTest() {
@@ -300,9 +302,9 @@ int main(int argc, const char * argv[])
 	//TestBinaryTree();
 	//TestAvl();
 	//RedBlack();
-	//CodingDojangQuiz();
+	CodingDojangQuiz();
 
-	CrackInterview();
+	//CrackInterview();
 	//SortTest();
 
     return 0;

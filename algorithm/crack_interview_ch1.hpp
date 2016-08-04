@@ -6,8 +6,8 @@
 //  Copyright © 2016년 acoross. All rights reserved.
 //
 
-#ifndef crack_coding_interview_hpp
-#define crack_coding_interview_hpp
+#ifndef crack_interview_ch1_hpp
+#define crack_interview_ch1_hpp
 
 #include <stdio.h>
 
@@ -26,4 +26,4 @@ namespace crack_coding_interview {
 	}
 }
 
-#endif /* crack_coding_interview_hpp */
+#endif /* crack_interview_ch1_hpp */

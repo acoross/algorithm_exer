@@ -16,6 +16,8 @@
 		B05FE3351D21647C00E49373 /* avl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B05FE3331D21647C00E49373 /* avl.cpp */; };
 		B084666F1D1C18AD0099ED66 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B084666E1D1C18AD0099ED66 /* main.cpp */; };
 		B090B0871D22CB19007F3EFF /* avl_tree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B090B0851D22CB19007F3EFF /* avl_tree.cpp */; };
+		B0AD91771D52000F00CFD82C /* crack_interview_ch5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0AD91751D52000F00CFD82C /* crack_interview_ch5.cpp */; };
+		B0AD917A1D5249CB00CFD82C /* crack_interview_ch9.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0AD91781D5249CB00CFD82C /* crack_interview_ch9.cpp */; };
 		B0CE173D1D464BF900883590 /* count_num_under_1000.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0CE173B1D464BF900883590 /* count_num_under_1000.cpp */; };
 		B0CE17441D4B644400883590 /* crack_interview_ch1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0CE17421D4B644400883590 /* crack_interview_ch1.cpp */; };
 		B0D1794F1D1E5534002B6291 /* binary_tree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0D1794D1D1E5534002B6291 /* binary_tree.cpp */; };
@@ -51,6 +53,10 @@
 		B084666E1D1C18AD0099ED66 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; usesTabs = 1; };
 		B090B0851D22CB19007F3EFF /* avl_tree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = avl_tree.cpp; sourceTree = "<group>"; };
 		B090B0861D22CB19007F3EFF /* avl_tree.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = avl_tree.hpp; sourceTree = "<group>"; };
+		B0AD91751D52000F00CFD82C /* crack_interview_ch5.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crack_interview_ch5.cpp; sourceTree = "<group>"; };
+		B0AD91761D52000F00CFD82C /* crack_interview_ch5.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = crack_interview_ch5.hpp; sourceTree = "<group>"; };
+		B0AD91781D5249CB00CFD82C /* crack_interview_ch9.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = crack_interview_ch9.cpp; path = ../crack_interview_ch9.cpp; sourceTree = "<group>"; };
+		B0AD91791D5249CB00CFD82C /* crack_interview_ch9.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = crack_interview_ch9.hpp; path = ../crack_interview_ch9.hpp; sourceTree = "<group>"; };
 		B0CE173B1D464BF900883590 /* count_num_under_1000.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = count_num_under_1000.cpp; sourceTree = "<group>"; };
 		B0CE173C1D464BF900883590 /* count_num_under_1000.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = count_num_under_1000.hpp; sourceTree = "<group>"; };
 		B0CE17421D4B644400883590 /* crack_interview_ch1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crack_interview_ch1.cpp; sourceTree = "<group>"; };
@@ -146,6 +152,10 @@
 				B05614F51D4FA7080034D48F /* crack_interview_ch3.hpp */,
 				B03204101D5102C4000DFF95 /* crack_interview_ch4.cpp */,
 				B03204111D5102C4000DFF95 /* crack_interview_ch4.hpp */,
+				B0AD91751D52000F00CFD82C /* crack_interview_ch5.cpp */,
+				B0AD91761D52000F00CFD82C /* crack_interview_ch5.hpp */,
+				B0AD91781D5249CB00CFD82C /* crack_interview_ch9.cpp */,
+				B0AD91791D5249CB00CFD82C /* crack_interview_ch9.hpp */,
 			);
 			name = CrackInterview;
 			sourceTree = "<group>";
@@ -235,8 +245,10 @@
 			files = (
 				B032040F1D50A3EF000DFF95 /* sort.cpp in Sources */,
 				B090B0871D22CB19007F3EFF /* avl_tree.cpp in Sources */,
+				B0AD917A1D5249CB00CFD82C /* crack_interview_ch9.cpp in Sources */,
 				B05FE3311D1ED42600E49373 /* bst.cpp in Sources */,
 				B032040B1D501565000DFF95 /* coding_dojang.cpp in Sources */,
+				B0AD91771D52000F00CFD82C /* crack_interview_ch5.cpp in Sources */,
 				B0CE17441D4B644400883590 /* crack_interview_ch1.cpp in Sources */,
 				B05614F61D4FA7080034D48F /* crack_interview_ch3.cpp in Sources */,
 				B03204121D5102C4000DFF95 /* crack_interview_ch4.cpp in Sources */,
