@@ -15,6 +15,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <set>
 
 namespace coding_dojang {
 
@@ -72,21 +73,13 @@ namespace coding_dojang {
 		class KPalindromeChecker {
 		public:
 			KPalindromeChecker(const std::string& str, int k)
-			: str_(str), k_(k), is_k_palindrome_(false) {
-				if (!breif_check_can_be_palindrome(k)) {
-					is_k_palindrome_ = false;
+			: str_(str), is_k_palindrome_(false) {
+				if (!breif_check_can_be_palindrome(k))
 					return;
-				}
-
-				if (str_.size() > 20000) {
-					is_k_palindrome_ = false;
+				if (str_.size() > 20000)
 					return;
-				}
-
-				if (k > 30) {
-					is_k_palindrome_ = false;
+				if (k > 30)
 					return;
-				}
 
 				is_k_palindrome_ = is_k_palindrome(k, 0, (int)str_.size() - 1);
 			}
@@ -103,26 +96,15 @@ namespace coding_dojang {
 		private:
 			class KPalindromeCache {
 			public:
-				enum ResultType {
-					NO_DATA,
-					IS_PALINDROME,
-					NOT_PALINDROME
-				};
+				bool IsCached(int s, int e) const {
+					if (cache_.find(std::make_pair(s, e)) != cache_.end())
+						return true;
 
-				ResultType Cache(int s, int e) const {
-					auto it = cache_.find(std::make_pair(s, e));
-					if (it != cache_.end()) {
-						if (it->second)
-							return IS_PALINDROME;
-						else
-							return NOT_PALINDROME;
-					}
-
-					return NO_DATA;
+					return false;
 				}
 
-				void SetCache(int s, int e, bool is_palindrome) {
-					cache_.insert(std::make_pair(std::make_pair(s, e), is_palindrome));
+				void SetCache(int s, int e) {
+					cache_.insert(std::make_pair(s, e));
 				}
 
 				int Size() const {
@@ -130,30 +112,19 @@ namespace coding_dojang {
 				}
 
 			private:
-				using IsPalindromeMap = std::map<std::pair<int, int>, bool>;
-				IsPalindromeMap cache_;
+				using IsPalindromeSet = std::set<std::pair<int, int>>;
+				IsPalindromeSet cache_;
 			};
 
 			// s: 시작 인덱스
 			// e: 마지막 인덱스 (null terminating 빼고)
 			bool is_k_palindrome(int k, int s, int e) {
-				// DFS 방식이지만, queue 를 이용하여 BFS 방식으로 변경해 볼 수 있을 듯.
-				// 그런데 BFS 방식이 더 효율적인걸까??
-
 				if (k < 0)
 					return false;
-
 				if (s >= e)
 					return false;
-
-				switch (cache_.Cache(s, e)) {
-					case KPalindromeCache::IS_PALINDROME:
-						return true;
-					case KPalindromeCache::NOT_PALINDROME:
-						return false;
-					case KPalindromeCache::NO_DATA:
-						break;
-				}
+				if (cache_.IsCached(s, e))
+					return false;
 
 				++op_count_;
 
@@ -161,20 +132,17 @@ namespace coding_dojang {
 				while (c_str[s] == c_str[e]) {
 					++s;
 					--e;
-					if (s >= e) {
-						cache_.SetCache(s, e, true);
+					if (s >= e)
 						return true;
-					}
 				}
 
-				if(is_k_palindrome(k - 1, s + 1, e)) {
-					cache_.SetCache(s, e, true);
+				if(is_k_palindrome(k - 1, s + 1, e))
 					return true;
-				}
+				if (is_k_palindrome(k - 1, s, e - 1))
+					return true;
 
-				auto result = is_k_palindrome(k - 1, s, e - 1);
-				cache_.SetCache(s, e, result);
-				return result;
+				cache_.SetCache(s, e);
+				return false;
 			}
 
 			// 미리 한 번 글자 수로 조건 체크.
@@ -192,15 +160,13 @@ namespace coding_dojang {
 						++count_odd;
 				}
 
-				if (count_odd > k) {
+				if (count_odd > k)
 					return false;
-				}
 
 				return true;
 			}
 
 			const std::string& str_;
-			const int k_{0};
 			bool is_k_palindrome_{false};
 			KPalindromeCache cache_;
 			int op_count_{0};

@@ -31,8 +31,7 @@
 
 #include "sort.hpp"
 
-void TestBinaryTree()
-{
+void TestBinaryTree() {
 	using namespace std;
 	using namespace bintree;
 
@@ -87,8 +86,7 @@ void TestBinaryTree()
 	}
 }
 
-void TestBST()
-{
+void TestBST() {
 	try
 	{
 		bst::BST bstree;
@@ -126,8 +124,7 @@ void TestBST()
 	}
 }
 
-void TestAvl()
-{
+void TestAvl() {
 	avl::AvlTree avltree;
 
 	//std::vector<int> arr = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
@@ -193,8 +190,7 @@ void TestAvl()
 	}
 }
 
-void RedBlack()
-{
+void RedBlack() {
 	using namespace redblacktree;
 	RedBlackBST tree;
 
@@ -274,7 +270,8 @@ void CrackInterview() {
 //	ch_5_bit_operation::Q5_1::Test();
 //	ch_5_bit_operation::Q5_3::Test();
 
-	ch_9_recursion_dynamic::Q9_3::Test();
+	ch_9_recursion_dynamic::Q9_1::Test();
+	//ch_9_recursion_dynamic::Q9_3::Test();
 }
 
 void SortTest() {
@@ -302,9 +299,9 @@ int main(int argc, const char * argv[])
 	//TestBinaryTree();
 	//TestAvl();
 	//RedBlack();
-	CodingDojangQuiz();
+	//CodingDojangQuiz();
 
-	//CrackInterview();
+	CrackInterview();
 	//SortTest();
 
     return 0;

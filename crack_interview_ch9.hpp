@@ -18,6 +18,43 @@
 namespace crack_coding_interview {
 	namespace ch_9_recursion_dynamic {
 
+		class Q9_1 {
+		public:
+			static void Test() {
+				run_and_print(10);
+				run_and_print(20);
+				run_and_print(30);
+				run_and_print(40);
+				run_and_print(60);
+			}
+
+		private:
+			static int64_t count_step_over_cases(int remain_steps, std::vector<int64_t>& cache) {
+				if (remain_steps < 0)
+					return 0;
+
+				if (remain_steps == 0)
+					return 1;
+
+				if (cache[remain_steps] > 0)
+					return cache[remain_steps];
+
+				auto count = count_step_over_cases(remain_steps - 3, cache);
+				count += count_step_over_cases(remain_steps - 2, cache);
+				count += count_step_over_cases(remain_steps - 1, cache);
+
+				cache[remain_steps] = count;
+				return count;
+			}
+
+			static void run_and_print(int steps) {
+				std::vector<int64_t> cache(steps + 1, -1);
+
+				auto count = count_step_over_cases(steps, cache);
+				printf("steps[%d]: %lld\n", steps, count);
+			}
+		};
+
 		class Q9_2 {
 		public:
 			static void Test() {
