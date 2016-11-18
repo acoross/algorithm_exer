@@ -1,3 +1,5 @@
 xcuserdata/*
 *.xcuserstate
 *.xcbkptlist
+.vs
+*/.vs/*
